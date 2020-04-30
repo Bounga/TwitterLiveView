@@ -8,7 +8,7 @@ defmodule TwitterWeb.PostLive.Index do
   def mount(_params, _session, socket) do
     if connected?(socket), do: Timeline.subscribe()
 
-    {:ok, assign(socket, :posts, fetch_posts())}
+    {:ok, assign(socket, :posts, fetch_posts()), temporary_assigns: [posts: []]}
   end
 
   @impl true
@@ -43,6 +43,10 @@ defmodule TwitterWeb.PostLive.Index do
   end
 
   def handle_info({:post_created, post}, socket) do
+    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
+  end
+
+  def handle_info({:post_updated, post}, socket) do
     {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
 
