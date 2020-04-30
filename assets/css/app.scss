@@ -89,3 +89,27 @@
 .alert:empty {
   display: none;
 }
+
+.post {
+  border: 1px solid darkgray;
+  border-radius: 1em;
+  padding: 1em 2em;
+  margin-bottom: 1em;
+
+  .actions {
+    margin-top: 1em;
+
+    .change {
+      text-align: right;
+    }
+  }
+  
+  .post-avatar {
+    background-color: lightgray;
+    width: 4em;
+    height: 4em;
+  }
+}
+
+
+
