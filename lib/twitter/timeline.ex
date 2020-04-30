@@ -104,6 +104,22 @@ defmodule Twitter.Timeline do
     Post.changeset(post, attrs)
   end
 
+  def increment_likes(%Post{id: id}) do
+    {1, [post]} =
+      from(p in Post, where: p.id == ^id, select: p)
+      |> Repo.update_all(inc: [likes_count: 1])
+
+    broadcast({:ok, post}, :post_updated)
+  end
+
+  def increment_reposts(%Post{id: id}) do
+    {1, [post]} =
+      from(p in Post, where: p.id == ^id, select: p)
+      |> Repo.update_all(inc: [reposts_count: 1])
+
+    broadcast({:ok, post}, :post_updated)
+  end
+
   def subscribe() do
     Phoenix.PubSub.subscribe(Twitter.PubSub, "posts")
   end
